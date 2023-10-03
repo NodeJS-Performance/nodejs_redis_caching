@@ -25,10 +25,10 @@ async function cacheData(req, res, next) {
     try {
         const cacheResults = await redisClient.get(species);
         if (cacheResults) {
-            results = JSON.parse(cacheResults);
+            console.log("Results fetched from Redis Cache");
             res.send({
                 fromCache: true,
-                data: results,
+                data: JSON.parse(cacheResults)
             });
         } else {
             next();
@@ -63,6 +63,4 @@ async function getSpeciesData(req, res) {
 
 app.get("/fish/:species", cacheData, getSpeciesData);
 
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
-});
+app.listen(port, () => console.log(`The server is running on port ${port}`));
